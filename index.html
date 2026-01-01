@@ -1,1 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AVL INFO & AINET | ASR-555 / AR-555 | COMING 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Rajdhani', 'Orbitron', sans-serif;
+        }
 
+        body {
+            background: #000;
+            color: #fff;
+            min-height: 100vh;
+            width: 100%;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(0, 100, 255, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(255, 0, 100, 0.1) 0%, transparent 40%);
+        }
+
+        /* Game UI Elements */
+        .game-ui {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .ui-element {
+            position: absolute;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        /* Health Bar Style Loading */
+        .loading-bar {
+            position: fixed;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 300px;
+            height: 15px;
+            border: 2px solid #00ff00;
+            background: rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            z-index: 100;
+            border-radius: 10px;
+        }
+
+        .loading-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #00ff00, #00cc00);
+            animation: loading 4s ease-in-out infinite;
+            border-radius: 8px;
+        }
+
+        @keyframes loading {
+            0%, 100% { width: 10%; }
+            50% { width: 90%; }
+        }
+
+        .loading-text {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            color: #00ff00;
+            letter-spacing: 1px;
+            z-index: 100;
+            text-align: center;
+            width: 90%;
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 1rem;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            margin-top: 70px;
+            box-sizing: border-box;
+        }
+
+        /* COMING Header - RESPONSIVE */
+        .coming-header {
+            margin-bottom: 1.5rem;
+            position: relative;
+            width: 100%;
+        }
+
+        .coming-title {
+            font-size: clamp(3rem, 10vw, 8rem);
+            font-weight: 900;
+            background: linear-gradient(90deg, #00ffea, #ff00ff, #00ffea);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: shine 3s infinite linear;
+            letter-spacing: clamp(2px, 2vw, 10px);
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            line-height: 1;
+            word-break: break-word;
+        }
+
+        @keyframes shine {
+            0% { background-position: 0% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .coming-subtitle {
+            font-size: clamp(0.8rem, 3vw, 1.5rem);
+            color: #aaa;
+            letter-spacing: clamp(1px, 1vw, 5px);
+            text-transform: uppercase;
+            line-height: 1.3;
+        }
+
+        /* Company Header - AVL INFO & AINET */
+        .company-header {
+            margin-bottom: 2rem;
+            width: 100%;
+        }
+
+        .company-logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: clamp(1rem, 3vw, 2rem);
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .company-logo {
+            padding: clamp(0.5rem, 2vw, 1rem) clamp(1rem, 3vw, 2rem);
+            border-radius: 10px;
+            font-size: clamp(1.2rem, 4vw, 2.5rem);
+            font-weight: 700;
+            letter-spacing: clamp(2px, 1vw, 8px);
+            text-transform: uppercase;
+            min-width: min-content;
+        }
+
+        .avl-logo {
+            background: rgba(0, 168, 255, 0.1);
+            border: 2px solid #00a8ff;
+            color: #00a8ff;
+            text-shadow: 0 0 10px rgba(0, 168, 255, 0.5);
+        }
+
+        .ainet-logo {
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid #ffd700;
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .and-symbol {
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .partnership-text {
+            font-size: clamp(0.7rem, 2vw, 0.9rem);
+            color: #888;
+            letter-spacing: clamp(1px, 0.5vw, 2px);
+            line-height: 1.4;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Product Codes - RESPONSIVE */
+        .product-display {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+            width: 100%;
+        }
+
+        @media (min-width: 768px) {
+            .product-display {
+                flex-direction: row;
+                gap: clamp(1rem, 3vw, 3rem);
+            }
+        }
+
+        .product-code {
+            font-size: clamp(2rem, 8vw, 5rem);
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 
+                0 0 10px currentColor,
+                0 0 20px rgba(255, 255, 255, 0.3);
+            position: relative;
+            padding: clamp(0.5rem, 2vw, 1rem) clamp(1rem, 3vw, 2rem);
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            min-width: min(250px, 90vw);
+            max-width: 400px;
+            transition: all 0.3s;
+            cursor: pointer;
+            box-sizing: border-box;
+            word-break: break-word;
+        }
+
+        .product-code:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .asr-555 { 
+            color: #00ffea;
+            border-color: #00ffea;
+            box-shadow: 0 0 30px rgba(0, 255, 234, 0.2);
+        }
+
+        .ar-555 { 
+            color: #ff00ff;
+            border-color: #ff00ff;
+            box-shadow: 0 0 30px rgba(255, 0, 255, 0.2);
+        }
+
+        .code-label {
+            font-size: clamp(0.7rem, 2vw, 0.9rem);
+            color: #aaa;
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #000;
+            padding: 0 clamp(0.5rem, 1vw, 1rem);
+            letter-spacing: clamp(1px, 0.5vw, 2px);
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .vs {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            color: #ffd700;
+            font-weight: bold;
+            text-shadow: 0 0 15px #ffd700;
+            animation: pulse 2s infinite;
+            padding: 0 clamp(0.5rem, 1vw, 1rem);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+        }
+
+        /* Launch Section - RESPONSIVE */
+        .launch-section {
+            margin: 2rem 0;
+            position: relative;
+            width: 100%;
+            padding: 0 1rem;
+        }
+
+        .launch-date {
+            font-size: clamp(1.5rem, 5vw, 3rem);
+            font-weight: 900;
+            color: #ffd700;
+            letter-spacing: clamp(1px, 1vw, 5px);
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+            word-break: break-word;
+        }
+
+        .date-note {
+            font-size: clamp(0.7rem, 2vw, 1rem);
+            color: #888;
+            font-style: italic;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.4;
+        }
+
+        .coming-2026 {
+            font-size: clamp(1rem, 3vw, 2rem);
+            color: #ffd700;
+            letter-spacing: clamp(2px, 1vw, 10px);
+            text-transform: uppercase;
+            position: relative;
+            display: inline-block;
+            padding: 0 clamp(1rem, 2vw, 2rem);
+            margin-top: 1rem;
+        }
+
+        .coming-2026::before,
+        .coming-2026::after {
+            content: '✦';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ffd700;
+            font-size: clamp(0.8rem, 2vw, 1.5rem);
+        }
+
+        .coming-2026::before {
+            left: -5px;
+        }
+
+        .coming-2026::after {
+            right: -5px;
+        }
+
+        /* Countdown Timer - RESPONSIVE */
+        .countdown {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 2rem auto;
+            max-width: 500px;
+            width: 100%;
+            padding: 0 1rem;
+        }
+
+        @media (min-width: 480px) {
+            .countdown {
+                grid-template-columns: repeat(4, 1fr);
+                gap: clamp(0.5rem, 2vw, 2rem);
+            }
+        }
+
+        .countdown-item {
+            background: rgba(0, 0, 0, 0.5);
+            padding: clamp(0.8rem, 2vw, 1.5rem);
+            border-radius: 10px;
+            border: 1px solid #00ffea;
+            min-width: 0;
+        }
+
+        .countdown-value {
+            font-size: clamp(1.5rem, 5vw, 3rem);
+            font-weight: bold;
+            color: #00ffea;
+            margin-bottom: 0.3rem;
+            line-height: 1;
+        }
+
+        .countdown-label {
+            font-size: clamp(0.6rem, 1.5vw, 0.9rem);
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: clamp(0.5px, 0.5vw, 2px);
+        }
+
+        /* Platform Icons - RESPONSIVE */
+        .platforms {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: clamp(0.8rem, 2vw, 2rem);
+            margin: 1.5rem 0;
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            opacity: 0.7;
+            padding: 0 1rem;
+        }
+
+        .platform-icon {
+            transition: all 0.3s;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .platform-icon:hover {
+            opacity: 1;
+            transform: scale(1.2);
+            color: #00ffea;
+        }
+
+        /* Development Progress - RESPONSIVE */
+        .dev-progress {
+            max-width: 600px;
+            width: 90%;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .progress-label {
+            text-align: left;
+            color: #aaa;
+            margin-bottom: 0.5rem;
+            font-size: clamp(0.7rem, 1.5vw, 0.9rem);
+            letter-spacing: 0.5px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .progress-bar {
+            height: clamp(12px, 3vw, 20px);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 65%;
+            background: linear-gradient(90deg, #00ffea, #0099cc);
+            border-radius: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.3), 
+                transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* FOOTER - RESPONSIVE */
+        .footer {
+            margin-top: 3rem;
+            color: #00a8ff;
+            font-size: clamp(0.7rem, 1.5vw, 0.9rem);
+            letter-spacing: 1px;
+            border-top: 1px solid rgba(0, 168, 255, 0.3);
+            padding: clamp(1rem, 2vw, 2rem);
+            font-family: 'Courier New', monospace;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .company-info {
+            font-size: clamp(0.9rem, 2.5vw, 1.2rem);
+            color: #00ffea;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            line-height: 1.3;
+        }
+
+        .partnership-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 215, 0, 0.1);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            margin-bottom: 1rem;
+            font-size: clamp(0.6rem, 1.5vw, 0.8rem);
+            color: #ffd700;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .footer-details {
+            color: #888;
+            font-size: clamp(0.6rem, 1.5vw, 0.8rem);
+            line-height: 1.5;
+            margin-top: 0.5rem;
+        }
+
+        .footer-note {
+            color: #ffd700;
+            font-style: italic;
+            margin-top: 1rem;
+            font-size: clamp(0.7rem, 1.5vw, 0.9rem);
+            border-left: 3px solid #ffd700;
+            padding-left: 0.8rem;
+            line-height: 1.4;
+        }
+
+        /* COPYRIGHT SECTION */
+        .copyright {
+            margin-top: 1.5rem;
+            font-size: clamp(0.6rem, 1.5vw, 0.7rem);
+            color: #ff6b6b;
+            border-top: 1px solid #444;
+            padding-top: 1rem;
+            font-family: 'Courier New', monospace;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .copyright strong {
+            color: #ffd700;
+            font-weight: bold;
+        }
+
+        .copyright a {
+            color: #00ffea;
+            text-decoration: none;
+        }
+
+        .copyright a:hover {
+            text-decoration: underline;
+            color: #ffd700;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: clamp(0.8rem, 2vw, 2rem);
+            margin-top: 1.5rem;
+        }
+
+        .footer-link {
+            color: #00a8ff;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: clamp(0.6rem, 1.5vw, 0.8rem);
+            white-space: nowrap;
+        }
+
+        .footer-link:hover {
+            color: #00ffea;
+            text-decoration: underline;
+        }
+
+        /* Copyright animation */
+        .copyright {
+            animation: copyrightPulse 5s infinite;
+        }
+
+        @keyframes copyrightPulse {
+            0%, 100% { 
+                color: #ff6b6b; 
+                text-shadow: 0 0 5px rgba(255, 107, 107, 0.3);
+            }
+            50% { 
+                color: #ffa8a8; 
+                text-shadow: 0 0 10px rgba(255, 168, 168, 0.5);
+            }
+        }
+
+        /* Notification Popup */
+        .notification {
+            position: fixed;
+            top: 70px;
+            right: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.9);
+            border-left: 4px solid #00ffea;
+            padding: 0.8rem;
+            border-radius: 5px;
+            display: none;
+            z-index: 1000;
+            animation: slideIn 0.5s ease-out;
+            font-size: clamp(0.7rem, 2vw, 0.9rem);
+        }
+
+        @media (min-width: 768px) {
+            .notification {
+                left: auto;
+                right: 20px;
+                max-width: 300px;
+            }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Particle Background */
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+
+        /* Additional Responsive Fixes */
+        @media (max-width: 480px) {
+            .container {
+                margin-top: 60px;
+                padding: 0.5rem;
+            }
+            
+            .company-logos {
+                flex-direction: column;
+            }
+            
+            .and-symbol {
+                margin: 0.5rem 0;
+            }
+            
+            .countdown {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.5rem;
+            }
+            
+            .platforms {
+                gap: 0.8rem;
+            }
+        }
+
+        @media (max-width: 320px) {
+            .coming-title {
+                font-size: 2.5rem;
+            }
+            
+            .product-code {
+                font-size: 1.8rem;
+                min-width: 90%;
+            }
+            
+            .countdown {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Portrait mode fixes */
+        @media (orientation: portrait) and (max-height: 700px) {
+            .container {
+                margin-top: 50px;
+            }
+            
+            .product-display {
+                margin: 1rem 0;
+            }
+            
+            .launch-section {
+                margin: 1rem 0;
+            }
+        }
+
+        /* Landscape mode fixes */
+        @media (orientation: landscape) and (max-height: 500px) {
+            .container {
+                margin-top: 40px;
+                padding: 0.5rem;
+            }
+            
+            .coming-title {
+                font-size: 3rem;
+                margin-bottom: 0.3rem;
+            }
+            
+            .product-display {
+                flex-direction: row;
+                margin: 1rem 0;
+                gap: 1rem;
+            }
+            
+            .product-code {
+                font-size: 2rem;
+                padding: 0.5rem 1rem;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+</head>
+<body>
+    <!-- Particle Background -->
+    <div id="particles-js"></div>
+    
+    <!-- Game UI Elements -->
+    <div class="game-ui" id="gameUI"></div>
+    
+    <!-- Health Bar Style Loading -->
+    <div class="loading-bar">
+        <div class="loading-fill"></div>
+    </div>
+    <div class="loading-text">SYSTEM INITIALIZING...</div>
+    
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <strong>AVL INFO & AINET PARTNERSHIP</strong><br>
+        <span id="notificationText">Joint project discovered!</span>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <!-- COMING Header -->
+        <div class="coming-header">
+            <h1 class="coming-title">COMING</h1>
+            <div class="coming-subtitle">JOINT INNOVATION PROJECT</div>
+        </div>
+        
+        <!-- Company Header - AVL INFO & AINET -->
+        <div class="company-header">
+            <div class="company-logos">
+                <div class="company-logo avl-logo">AVL INFO</div>
+                <div class="and-symbol">×</div>
+                <div class="company-logo ainet-logo">AINET</div>
+            </div>
+            <div class="partnership-text">
+                Strategic Partnership • Technology Collaboration • Established 2025
+            </div>
+        </div>
+        
+        <!-- Product Codes -->
+        <div class="product-display">
+            <div class="product-code asr-555">
+                <div class="code-label">AVL-AINET Project</div>
+                ASR-555
+            </div>
+            
+            <div class="vs">&</div>
+            
+            <div class="product-code ar-555">
+                <div class="code-label">AVL-AINET Project</div>
+                AR-555
+            </div>
+        </div>
+        
+        <!-- Launch Date - BEFORE 12/12/2026 -->
+        <div class="launch-section">
+            <div class="launch-date">LAUNCHING BEFORE 12/12/2026</div>
+            <div class="date-note">Official joint release scheduled for Q4 2026, available before December 12, 2026</div>
+            <div class="coming-2026">COMING SOON</div>
+        </div>
+        
+        <!-- Countdown Timer to Dec 11, 2026 -->
+        <div class="countdown">
+            <div class="countdown-item">
+                <div class="countdown-value" id="days">730</div>
+                <div class="countdown-label">Days</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-value" id="hours">23</div>
+                <div class="countdown-label">Hours</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-value" id="minutes">59</div>
+                <div class="countdown-label">Minutes</div>
+            </div>
+            <div class="countdown-item">
+                <div class="countdown-value" id="seconds">59</div>
+                <div class="countdown-label">Seconds</div>
+            </div>
+        </div>
+        
+        <!-- Platform Icons -->
+        <div class="platforms">
+            <div class="platform-icon"><i class="fas fa-desktop"></i></div>
+            <div class="platform-icon"><i class="fas fa-cloud"></i></div>
+            <div class="platform-icon"><i class="fas fa-mobile-alt"></i></div>
+            <div class="platform-icon"><i class="fas fa-server"></i></div>
+            <div class="platform-icon"><i class="fas fa-network-wired"></i></div>
+            <div class="platform-icon"><i class="fas fa-database"></i></div>
+        </div>
+        
+        <!-- Development Progress -->
+        <div class="dev-progress">
+            <div class="progress-label">
+                <span>JOINT DEVELOPMENT PROGRESS</span>
+                <span id="progressPercent">65%</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+        
+        <!-- FOOTER -->
+        <div class="footer">
+            <div class="partnership-badge">
+                <i class="fas fa-handshake"></i>
+                AVL INFO × AINET PARTNERSHIP
+            </div>
+            
+            <div class="company-info">AVL INFORMATION TECHNOLOGIES & AINET ESTABLISHMENT</div>
+            <div class="footer-details">
+                Combined expertise in technology innovation and digital solutions.<br>
+                ASR-555 and AR-555 represent our joint next-generation product initiative.
+            </div>
+            
+            <div class="footer-note">
+                Official joint launch scheduled before December 12, 2026. Collaborative development in progress.
+            </div>
+            
+            <div class="footer-links">
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <a href="#" class="footer-link">Terms of Service</a>
+                <a href="#" class="footer-link">Contact AVL</a>
+                <a href="#" class="footer-link">Contact AINET</a>
+                <a href="#" class="footer-link">Partnership Info</a>
+            </div>
+            
+            <!-- COPYRIGHT SECTION -->
+            <div class="copyright">
+                <strong>© 2025-2026 AVL INFO Pvt. Ltd. & AINET Establishment</strong> All rights reserved.<br>
+                ASR-555™ and AR-555™ are joint trademarks.<br>
+                Strategic Technology Partnership • Registered Collaboration<br>
+                <a href="mailto:partnership@avl-ainet.com">partnership@avl-ainet.com</a> | 
+                <a href="tel:+911234567890">+91 12345 67890</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Particle Background
+        document.addEventListener('DOMContentLoaded', function() {
+            // Particles.js configuration
+            particlesJS('particles-js', {
+                particles: {
+                    number: { 
+                        value: 50, 
+                        density: { 
+                            enable: true, 
+                            value_area: window.innerWidth < 768 ? 400 : 800 
+                        } 
+                    },
+                    color: { value: "#00a8ff" },
+                    shape: { type: "circle" },
+                    opacity: { value: 0.3, random: true },
+                    size: { value: window.innerWidth < 768 ? 2 : 3, random: true },
+                    line_linked: {
+                        enable: true,
+                        distance: window.innerWidth < 768 ? 100 : 150,
+                        color: "#00a8ff",
+                        opacity: 0.2,
+                        width: 1
+                    },
+                    move: {
+                        enable: true,
+                        speed: window.innerWidth < 768 ? 1 : 2,
+                        direction: "none",
+                        random: true,
+                        straight: false,
+                        out_mode: "out",
+                        bounce: false
+                    }
+                },
+                interactivity: {
+                    detect_on: "canvas",
+                    events: {
+                        onhover: { 
+                            enable: true, 
+                            mode: window.innerWidth < 768 ? "grab" : "repulse" 
+                        },
+                        onclick: { enable: true, mode: "push" },
+                        resize: true
+                    }
+                },
+                retina_detect: true
+            });
+            
+            // Create tech UI elements
+            const gameUI = document.getElementById('gameUI');
+            const uiElements = ['server', 'database', 'network', 'cloud', 'security', 'api', 'storage'];
+            
+            // Adjust number of UI elements based on screen size
+            const numElements = window.innerWidth < 768 ? 5 : 7;
+            
+            for(let i = 0; i < numElements; i++) {
+                const el = document.createElement('div');
+                el.className = 'ui-element';
+                el.style.width = `${Math.random() * 80 + 30}px`;
+                el.style.height = `${Math.random() * 40 + 15}px`;
+                el.style.left = `${Math.random() * 90}%`;
+                el.style.top = `${Math.random() * 90}%`;
+                el.style.borderRadius = '5px';
+                el.style.opacity = '0.05';
+                gameUI.appendChild(el);
+            }
+            
+            // Countdown Timer to December 11, 2026 (before 12/12/2026)
+            function updateCountdown() {
+                const targetDate = new Date('2026-12-11T23:59:59').getTime();
+                const now = new Date().getTime();
+                const timeLeft = targetDate - now;
+                
+                const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+                
+                document.getElementById('days').textContent = days > 0 ? days.toString().padStart(3, '0') : '000';
+                document.getElementById('hours').textContent = hours > 0 ? hours.toString().padStart(2, '0') : '00';
+                document.getElementById('minutes').textContent = minutes > 0 ? minutes.toString().padStart(2, '0') : '00';
+                document.getElementById('seconds').textContent = seconds > 0 ? seconds.toString().padStart(2, '0') : '00';
+            }
+            
+            // Update countdown every second
+            setInterval(updateCountdown, 1000);
+            updateCountdown();
+            
+            // Progress animation
+            let progress = 65;
+            const progressFill = document.getElementById('progressFill');
+            const progressPercent = document.getElementById('progressPercent');
+            
+            // Simulate progress increase
+            const progressInterval = setInterval(() => {
+                if (progress < 100) {
+                    progress += 0.05;
+                    progressFill.style.width = `${progress}%`;
+                    progressPercent.textContent = `${Math.floor(progress)}%`;
+                    
+                    // Show notification at certain milestones
+                    if (Math.floor(progress) === 70) {
+                        showNotification('Joint development milestone reached!');
+                    }
+                    if (Math.floor(progress) === 80) {
+                        showNotification('Alpha testing phase initiated');
+                    }
+                    if (Math.floor(progress) === 90) {
+                        showNotification('Beta release coming soon!');
+                        clearInterval(progressInterval);
+                    }
+                }
+            }, 2000);
+            
+            // Show notification function
+            function showNotification(message) {
+                const notification = document.getElementById('notification');
+                const notificationText = document.getElementById('notificationText');
+                
+                notificationText.textContent = message;
+                notification.style.display = 'block';
+                
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 3000);
+            }
+            
+            // Click on product codes
+            const productCodes = document.querySelectorAll('.product-code');
+            const achievements = [
+                "ASR-555: AVL-AINET Collaboration",
+                "AR-555: Joint Technology Platform",
+                "Both projects selected!",
+                "AVL & AINET Partnership Active"
+            ];
+            
+            let clickCount = 0;
+            
+            productCodes.forEach(code => {
+                code.addEventListener('click', function() {
+                    clickCount++;
+                    this.style.transform = 'scale(0.95)';
+                    
+                    // Show different notifications
+                    if (clickCount === 1) {
+                        showNotification(achievements[0]);
+                    } else if (clickCount === 2) {
+                        showNotification(achievements[1]);
+                    } else if (clickCount >= 3) {
+                        showNotification(achievements[2]);
+                    }
+                    
+                    setTimeout(() => {
+                        this.style.transform = 'translateY(-10px)';
+                    }, 200);
+                });
+            });
+            
+            // Update loading text randomly
+            const loadingTexts = [
+                "SYSTEM INITIALIZING...",
+                "LOADING JOINT MODULES...",
+                "CONNECTING TO DATABASE...",
+                "PREPARING LAUNCH...",
+                "SYNCHRONIZING SYSTEMS...",
+                "ANALYZING COLLABORATION...",
+                "AVL × AINET ACTIVE...",
+                "COMING SOON..."
+            ];
+            
+            setInterval(() => {
+                const loadingText = document.querySelector('.loading-text');
+                const randomText = loadingTexts[Math.floor(Math.random() * loadingTexts.length)];
+                loadingText.textContent = randomText;
+            }, 3000);
+            
+            // Handle window resize
+            let resizeTimer;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(function() {
+                    location.reload();
+                }, 500);
+            });
+            
+            // Copyright color cycling effect
+            const copyrightElement = document.querySelector('.copyright');
+            const colors = ['#ff6b6b', '#ffa8a8', '#ffd700', '#00ffea', '#00a8ff'];
+            let colorIndex = 0;
+            
+            setInterval(() => {
+                copyrightElement.style.color = colors[colorIndex];
+                colorIndex = (colorIndex + 1) % colors.length;
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
